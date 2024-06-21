@@ -1,0 +1,8 @@
+- 20:00 Nearlyfreespeech.net make account & create site 20:00
+- 20:12 Server access and hello world
+- 20:15 Hello PHP
+- 20:17 Make little sqlite table
+- 20:24 PHP Page Prose
+- 20:29 PHP Sqlite
+- 20:38 Code functionality
+- 20:49 Done!
