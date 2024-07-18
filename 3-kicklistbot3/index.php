@@ -30,13 +30,17 @@ body {
 </form>
 
 <?php
+//$now = microtime(true);
+
 if (!empty($_POST['clantag'])) {
   $clantag = $_POST['clantag'];
   $token = file_get_contents("token");
   $opts = array('http'=>array('method'=>"GET", 'header'=>"Authorization: Bearer $token"));
   $context = stream_context_create($opts);
   $bkindom = json_decode(file_get_contents("https://api.clashroyale.com/v1/clans/%23$clantag", false, $context));
+  //echo microtime(true) - $now;
   $bkindom2 = json_decode(file_get_contents("https://api.clashroyale.com/v1/clans/%23$clantag/currentriverrace", false, $context));
+  //echo microtime(true) - $now;
 
   $count = $bkindom->members;
   if ($count < 45) {
@@ -47,43 +51,50 @@ if (!empty($_POST['clantag'])) {
     echo "<p>you have <b style='color:green'>$count</b> members</p>";
   }
 
-  $db = new SQLite3('clan.db');
-  $db->query('DELETE FROM members;');
   $members = $bkindom->memberList;
-  foreach ($members as $member) {
-    $db->query("INSERT INTO members VALUES ('$member->name', '$member->role', $member->donations, 11);");
-  }
-  $members = $bkindom2->clan->participants;
-  foreach ($members as $member) {
-    $db->query("UPDATE members SET decks = $member->decksUsed WHERE name = '$member->name';");
+  $donations_zero = array();
+  for ($i = 0; $i < count($members); $i++) {
+    if ($members[$i]->donations <= 0) {
+      $donations_zero[] = $members[$i]->name;
+    }
   }
 
+  $members2 = $bkindom2->clan->participants;
+  $war_zero = array();
+  for ($i = 0; $i < count($members2); $i++) {
+    if ($members2[$i]->decksUsed <= 0) {
+      $war_zero[] = $members2[$i]->name;
+    }
+  }
+
+  $double_zero = array_values(array_intersect($donations_zero, $war_zero));
+  $donations_zero = array_values(array_diff($donations_zero, $double_zero));
+  $war_zero = array_values(array_diff($war_zero, $double_zero));
+
   echo "<h3>0 Donations, 0 Wardecks</h3>";
-  $res = $db->query("SELECT name FROM members WHERE decks = 0 AND donations = 0 AND role = 'member';");
   $a = "<p>";
-  while ($row = $res->fetchArray()){
-    $a .= "$row[0]<br>";
+  foreach ($double_zero as $row){
+    $a .= "$row<br>";
   }
   $a .= "</p>";
   echo $a;
 
   echo "<h3>0 Donations, X Wardecks</h3>";
-  $res = $db->query("SELECT name FROM members WHERE decks > 0 AND donations = 0 AND role = 'member';");
   $a = "<p>";
-  while ($row = $res->fetchArray()){
-  $a .= "$row[0]<br>";
+  foreach ($donations_zero as $row){
+    $a .= "$row<br>";
   }
   $a .= "</p>";
   echo $a;
 
   echo "<h3>X Donations, 0 Wardecks</h3>";
-  $res = $db->query("SELECT name FROM members WHERE decks = 0 AND donations > 0 AND role = 'member';");
   $a = "<p>";
-  while ($row = $res->fetchArray()){
-    $a .= "$row[0]<br>";
+  foreach ($war_zero as $row){
+    $a .= "$row<br>";
   }
   $a .= "</p>";
   echo $a;
+  //echo microtime(true) - $now;
 }
 ?>
 
