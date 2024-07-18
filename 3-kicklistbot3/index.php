@@ -35,12 +35,17 @@ body {
 if (!empty($_POST['clantag'])) {
   $clantag = $_POST['clantag'];
   $token = file_get_contents("token");
-  $opts = array('http'=>array('method'=>"GET", 'header'=>"Authorization: Bearer $token"));
-  $context = stream_context_create($opts);
-  $bkindom = json_decode(file_get_contents("https://api.clashroyale.com/v1/clans/%23$clantag", false, $context));
+  $crl = curl_init();
+  curl_setopt($crl, CURLOPT_HTTPHEADER, array("Authorization: Bearer $token"));
+  curl_setopt($crl, CURLOPT_USERAGENT, "CRKicklists v0.0.3");
+  curl_setopt($crl, CURLOPT_RETURNTRANSFER, true);
+  curl_setopt($crl, CURLOPT_URL, "https://api.clashroyale.com/v1/clans/%23$clantag");
+  $bkindom = json_decode(curl_exec($crl));
   //echo microtime(true) - $now;
-  $bkindom2 = json_decode(file_get_contents("https://api.clashroyale.com/v1/clans/%23$clantag/currentriverrace", false, $context));
+  curl_setopt($crl, CURLOPT_URL, "https://api.clashroyale.com/v1/clans/%23$clantag/currentriverrace");
+  $bkindom2 = json_decode(curl_exec($crl));
   //echo microtime(true) - $now;
+  curl_close($crl);
 
   $count = $bkindom->members;
   if ($count < 45) {
