@@ -56,25 +56,34 @@ if (!empty($_POST['clantag'])) {
     echo "<p>you have <b style='color:green'>$count</b> members</p>";
   }
 
+  $dict = array();
   $members = $bkindom->memberList;
-  $donations_zero = array();
-  for ($i = 0; $i < count($members); $i++) {
-    if ($members[$i]->donations <= 0) {
-      $donations_zero[] = $members[$i]->name;
-    }
-  }
-
   $members2 = $bkindom2->clan->participants;
-  $war_zero = array();
-  for ($i = 0; $i < count($members2); $i++) {
-    if ($members2[$i]->decksUsed <= 0) {
-      $war_zero[] = $members2[$i]->name;
+  foreach ($members as $member) {
+    $dict[$member->name] = [ "don" => $member->donations, "war" => 0];
+  }
+  foreach ($members2 as $member) {
+    //a member being in the war list, not in the donations list, indicates that the member has left
+    if (array_key_exists($member->name, $dict)) {
+      if (array_key_exists("don", $dict[$member->name])) {
+        $dict[$member->name]["war"] = $member->decksUsed;
+      }
     }
   }
 
-  $double_zero = array_values(array_intersect($donations_zero, $war_zero));
-  $donations_zero = array_values(array_diff($donations_zero, $double_zero));
-  $war_zero = array_values(array_diff($war_zero, $double_zero));
+  $donations_zero = array();
+  $war_zero = array();
+  $double_zero = array();
+
+  foreach ($dict as $name => $member) {
+    if ($member["don"] <= 0 and $member["war"] <= 0) {
+      $double_zero[] = $name;
+    } else if ($member["don"] <= 0) {
+      $donations_zero[] = $name;
+    } else if ($member["war"] <= 0) {
+      $war_zero[] = $name;
+    }
+  }
 
   echo "<h3>0 Donations, 0 Wardecks</h3>";
   $a = "<p>";
