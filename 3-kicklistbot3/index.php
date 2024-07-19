@@ -15,11 +15,15 @@
 </head>
 
 <style>
-* {
-  text-align: center;
-  margin-left: auto;
-  margin-right: auto;
-}
+  body {
+    text-align: center;
+  }
+  table, td, th {
+    margin-left: auto;
+    margin-right: auto;
+    border: 1px solid;
+    border-collapse: collapse;
+  }
 </style>
 
 <body>
