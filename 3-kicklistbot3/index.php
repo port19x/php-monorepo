@@ -23,7 +23,7 @@ body {
 <body>
 <h1>CRKicklists</h1>
 
-<form id="fastForm" method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
+<form id="fastForm" method="get" action="<?php echo $_SERVER['PHP_SELF']; ?>">
   <label for="clantag">Clan Tag:</label>
   <input id="clantag" name="clantag" type="text" placeholder="e.g. JGLJR8L">
   <input type="submit" value="Go" onmousedown="document.getElementById('fastForm').submit();">
@@ -32,8 +32,8 @@ body {
 <?php
 //$now = microtime(true);
 
-if (!empty($_POST['clantag'])) {
-  $clantag = $_POST['clantag'];
+if (!empty($_GET['clantag'])) {
+  $clantag = $_GET['clantag'];
   $token = file_get_contents("token");
   $crl = curl_init();
   curl_setopt($crl, CURLOPT_HTTPHEADER, array("Authorization: Bearer $token"));
@@ -52,7 +52,7 @@ if (!empty($_POST['clantag'])) {
     echo "<p>you have <b style='color:red'>$count</b> members</p>";
   } else if ($count < 48) {
     echo "<p>you have <b style='color:yellow'>$count</b> members</p>";
-  } else if ($count >48) {
+  } else if ($count >= 48) {
     echo "<p>you have <b style='color:green'>$count</b> members</p>";
   }
 
