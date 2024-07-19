@@ -23,10 +23,10 @@ body {
 <body>
 <h1>CRKicklists</h1>
 
-<form method=post action="<?php echo $_SERVER['PHP_SELF']; ?>">
+<form id="fastForm" method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
   <label for="clantag">Clan Tag:</label>
   <input id="clantag" name="clantag" type="text" placeholder="e.g. JGLJR8L">
-  <input type="submit" value="Go">
+  <input type="submit" value="Go" onmousedown="document.getElementById('fastForm').submit();">
 </form>
 
 <?php
