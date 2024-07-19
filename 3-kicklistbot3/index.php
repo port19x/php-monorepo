@@ -16,7 +16,7 @@
 
 <style>
 body {
-  text-align: center;
+  align: center;
 }
 </style>
 
@@ -60,7 +60,7 @@ if (!empty($_GET['clantag'])) {
   $members = $bkindom->memberList;
   $members2 = $bkindom2->clan->participants;
   foreach ($members as $member) {
-    $dict[$member->name] = [ "don" => $member->donations, "war" => 0];
+    $dict[$member->name] = ["name" => $member->name, "don" => $member->donations, "war" => 0];
   }
   foreach ($members2 as $member) {
     //a member being in the war list, not in the donations list, indicates that the member has left
@@ -71,42 +71,27 @@ if (!empty($_GET['clantag'])) {
     }
   }
 
-  $donations_zero = array();
-  $war_zero = array();
-  $double_zero = array();
-
-  foreach ($dict as $name => $member) {
-    if ($member["don"] <= 0 and $member["war"] <= 0) {
-      $double_zero[] = $name;
-    } else if ($member["don"] <= 0) {
-      $donations_zero[] = $name;
-    } else if ($member["war"] <= 0) {
-      $war_zero[] = $name;
+  function cmp($a, $b) {
+    $x =  $a["war"] <=> $b["war"];
+    if ($x == 0) {
+      $x =  $a["don"] <=> $b["don"];
     }
+    return $x;
   }
+  usort($dict, 'cmp');
 
-  echo "<h3>0 Donations, 0 Wardecks</h3>";
-  $a = "<p>";
-  foreach ($double_zero as $row){
-    $a .= "$row<br>";
+  $a =  "<table>";
+  $a .= "<tr><th>WarDecks</th><th>Donations</th><th>Name</th></tr>";
+  foreach ($dict as $name => $member){
+    $a .= "<tr><td>";
+    $a .= $member["war"];
+    $a .= "</td><td>";
+    $a .= $member["don"];
+    $a .= "</td><td>";
+    $a .= $member["name"];
+    $a .= "</td>";
   }
-  $a .= "</p>";
-  echo $a;
-
-  echo "<h3>0 Donations, X Wardecks</h3>";
-  $a = "<p>";
-  foreach ($donations_zero as $row){
-    $a .= "$row<br>";
-  }
-  $a .= "</p>";
-  echo $a;
-
-  echo "<h3>X Donations, 0 Wardecks</h3>";
-  $a = "<p>";
-  foreach ($war_zero as $row){
-    $a .= "$row<br>";
-  }
-  $a .= "</p>";
+  $a .= "</table>";
   echo $a;
   //echo microtime(true) - $now;
 }
