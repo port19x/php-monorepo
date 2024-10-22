@@ -123,7 +123,7 @@
                 $hmm = floor(($mkm * 21.0975) % 60);
                 $marah = floor(($mkm * 42.195) / 60);
                 $maram = floor(($mkm * 42.195) % 60);
-                echo "<b>$mkm Min/KM = $mio MIn/Mile</b>";
+                echo "<b>$mkm Min/KM = $mio Min/Mile</b>";
                 echo "<br>";
                 echo "<ul><li>$fivek Minute 5k</li><li>$tenk Minute 10k</li>";
                 echo "<li>$hmh Hour and $hmm Minute Half Marathon</li>";
