@@ -95,11 +95,15 @@
                 $kmo = $mmi / 1.609;
                 $fivek = $kmo * 5;
                 $tenk = $kmo * 10;
-                $hm = $kmo * 21.0975;
-                $mara = $kmo * 42.195;
+                $hmh = floor(($kmo * 21.0975) / 60);
+                $hmm = floor(($kmo * 21.0975) % 60);
+                $marah = floor(($kmo * 42.195) / 60);
+                $maram = floor(($kmo * 42.195) % 60);
                 echo "<b>$mmi Min/Mile = $kmo Min/KM</b>";
                 echo "<br>";
-                echo "<ul><li>$fivek Minute 5k</li><li>$tenk Minute 10k</li><li>$hm Minute Half Marathon</li><li>$mara Minute Marathon</li></ul>";
+                echo "<ul><li>$fivek Minute 5k</li><li>$tenk Minute 10k</li>";
+                echo "<li>$hmh Hour and $hmm Minute Half Marathon</li>";
+                echo "<li>$marah Hour and $maram Minute Marathon</li></ul>";
             }
         }
         if (!empty($_GET['km']) || !empty($_GET['mkm'])) {
@@ -114,11 +118,15 @@
                 $mio = $mkm / 0.621;
                 $fivek = $mkm * 5;
                 $tenk = $mkm * 10;
-                $hm = $mkm * 21.0975;
-                $mara = $mkm * 42.195;
+                $hmh = floor(($mkm * 21.0975) / 60);
+                $hmm = floor(($mkm * 21.0975) % 60);
+                $marah = floor(($mkm * 42.195) / 60);
+                $maram = floor(($mkm * 42.195) % 60);
                 echo "<b>$mkm Min/KM = $mio MIn/Mile</b>";
                 echo "<br>";
-                echo "<ul><li>$fivek Minute 5k</li><li>$tenk Minute 10k</li><li>$hm Minute Half Marathon</li><li>$mara Minute Marathon</li></ul>";
+                echo "<ul><li>$fivek Minute 5k</li><li>$tenk Minute 10k</li>";
+                echo "<li>$hmh Hour and $hmm Minute Half Marathon</li>";
+                echo "<li>$marah Hour and $maram Minute Marathon</li></ul>";
             }
         }
         ?>
