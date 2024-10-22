@@ -46,6 +46,7 @@
         </form>
 
         <?php
+        error_reporting(E_ALL & ~E_DEPRECATED);
         if (!empty($_GET['age'])) {
             echo "<h2>Max Heart Rate</h2>";
             echo "<p>These formulas are certainly better than 220-age lol.<br>";
