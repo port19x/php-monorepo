@@ -18,11 +18,6 @@
     </style>
 
     <body>
-        <h1>Port19s No Bullshit Running Calculator</h1>
-
-        <p>should I add an image here?</p>
-
-        <h2>Gimme</h2>
         <p><i>You may leave empty what you don't need</i></p>
 
         <form id="maxhr" method="get" action="<?php echo $_SERVER['PHP_SELF']; ?>">
@@ -40,6 +35,12 @@
             <br>
             <label for="mi"><i>(Conversion)</i>Distance in Miles:</label>
             <input id="mi" name="mi" type="text" placeholder="e.g. 10">
+            <br>
+            <label for="mkm"><i>(Conversion)</i>Pace in Min/KM:</label>
+            <input id="mkm" name="mkm" type="text" placeholder="e.g. 10">
+            <br>
+            <label for="mmi"><i>(Conversion)</i>Pace in Min/Mile:</label>
+            <input id="mmi" name="mmi" type="text" placeholder="e.g. 10">
             <br>
             <input type="submit" value="Go" onmousedown="document.getElementById('maxhr').submit();">
         </form>
@@ -79,20 +80,46 @@
             echo "<tr><td>5</td><td>$z5</td><td>$maxhr</td></tr>";
             echo "</tbody></table>";
         }
-        if (!empty($_GET['mi']) || !empty($_GET['km'])) {
-            echo "<h2>Distance Conversion</h2>";
+        if (!empty($_GET['mi']) || !empty($_GET['km']) || !empty($_GET['mkm']) || !empty($_GET['mmi'])) {
+            echo "<h2>Conversions</h2>";
         }
-        if (!empty($_GET['mi'])) {
+        if (!empty($_GET['mi']) || !empty($_GET['mmi'])) {
             echo "<h3>Freedom units to metric: 1 Mile = 1.609 Kilometers</h3>";
-            $mii = $_GET['mi'];
-            $kmo = $mii * 1.609;
-            echo "<b>$mii Miles = $kmo Kilometers</b>";
+            if (!empty($_GET['mi'])) {
+                $mii = $_GET['mi'];
+                $kmo = $mii * 1.609;
+                echo "<b>$mii Miles = $kmo Kilometers</b>";
+            }
+            if (!empty($_GET['mmi'])) {
+                $mmi = $_GET['mmi'];
+                $kmo = $mmi / 1.609;
+                $fivek = $kmo * 5;
+                $tenk = $kmo * 10;
+                $hm = $kmo * 21.0975;
+                $mara = $kmo * 42.195;
+                echo "<b>$mmi Min/Mile = $kmo Min/KM</b>";
+                echo "<br>";
+                echo "<ul><li>$fivek Minute 5k</li><li>$tenk Minute 10k</li><li>$hm Minute Half Marathon</li><li>$mara Minute Marathon</li></ul>";
+            }
         }
-        if (!empty($_GET['km'])) {
+        if (!empty($_GET['km']) || !empty($_GET['mkm'])) {
             echo "<h3>Metric to Freedom Units: 1 Kilometer = 0.621 Miles</h3>";
-            $kmi = $_GET['km'];
-            $mio = $kmi * 0.621;
-            echo "<b>$kmi Kilometers = $mio Miles</b>";
+            if (!empty($_GET['km'])) {
+                $kmi = $_GET['km'];
+                $mio = $kmi * 0.621;
+                echo "<b>$kmi Kilometers = $mio Miles</b>";
+            }
+            if (!empty($_GET['mkm'])) {
+                $mkm = $_GET['mkm'];
+                $mio = $mkm / 0.621;
+                $fivek = $mkm * 5;
+                $tenk = $mkm * 10;
+                $hm = $mkm * 21.0975;
+                $mara = $mkm * 42.195;
+                echo "<b>$mkm Min/KM = $mio MIn/Mile</b>";
+                echo "<br>";
+                echo "<ul><li>$fivek Minute 5k</li><li>$tenk Minute 10k</li><li>$hm Minute Half Marathon</li><li>$mara Minute Marathon</li></ul>";
+            }
         }
         ?>
     </body>
