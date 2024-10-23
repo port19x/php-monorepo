@@ -51,13 +51,21 @@
             return !empty($_GET[$x]);
         }
         function calcpaces($mkm){
+            $eight = $mkm * 0.8;
+            $mile = $mkm * 1.5;
+            $threek = $mkm * 3;
             $fivek = $mkm * 5;
             $tenk = $mkm * 10;
             $hmh = floor(($mkm * 21.0975) / 60);
             $hmm = floor(($mkm * 21.0975) % 60);
             $marah = floor(($mkm * 42.195) / 60);
             $maram = floor(($mkm * 42.195) % 60);
-            echo "<ul><li>$fivek Minute 5k</li><li>$tenk Minute 10k</li>";
+            echo "<ul>";
+            echo "<li>$eight Minute 800m</li>";
+            echo "<li>$mile Minute 1500m</li>";
+            echo "<li>$threek Minute 3k</li>";
+            echo "<li>$fivek Minute 5k</li>";
+            echo "<li>$tenk Minute 10k</li>";
             echo "<li>$hmh Hour and $hmm Minute Half Marathon</li>";
             echo "<li>$marah Hour and $maram Minute Marathon</li></ul>";
         }
