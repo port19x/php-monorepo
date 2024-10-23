@@ -47,7 +47,21 @@
 
         <?php
         error_reporting(E_ALL & ~E_DEPRECATED);
-        if (!empty($_GET['age'])) {
+        function gget($x) {
+            return !empty($_GET[$x]);
+        }
+        function calcpaces($mkm){
+            $fivek = $mkm * 5;
+            $tenk = $mkm * 10;
+            $hmh = floor(($mkm * 21.0975) / 60);
+            $hmm = floor(($mkm * 21.0975) % 60);
+            $marah = floor(($mkm * 42.195) / 60);
+            $maram = floor(($mkm * 42.195) % 60);
+            echo "<ul><li>$fivek Minute 5k</li><li>$tenk Minute 10k</li>";
+            echo "<li>$hmh Hour and $hmm Minute Half Marathon</li>";
+            echo "<li>$marah Hour and $maram Minute Marathon</li></ul>";
+        }
+        if (gget('age')) {
             echo "<h2>Max Heart Rate</h2>";
             echo "<p>These formulas are certainly better than 220-age lol.<br>";
             echo "See also: https://en.wikipedia.org/wiki/Heart_rate#Maximum_heart_rate</p>";
@@ -59,10 +73,10 @@
             echo "<b>Your Max HR: $maxhr</b>";
             echo "<p>Nothing beats your observed Max HR at a serious 5k race tho. Use custom Max HR for that.</p>";
         }
-        if (!empty($_GET['rhr']) && (!empty($_GET['age']) || !empty($_GET['mhr']))) {
+        if (gget('rhr') && (gget('age') || gget('mhr'))) {
             echo "<h2>HR Zones (Karvonen Formula)</h2>";
             echo "<p>This formula is more accurate than a purely max-hr based one, because it takes your resting heart rate into account.</p>";
-            if (!empty($_GET['mhr'])) {
+            if (gget('mhr')) {
                 $maxhr = $_GET['mhr'];
             }
             $rhr = $_GET['rhr'];
@@ -81,53 +95,37 @@
             echo "<tr><td>5</td><td>$z5</td><td>$maxhr</td></tr>";
             echo "</tbody></table>";
         }
-        if (!empty($_GET['mi']) || !empty($_GET['km']) || !empty($_GET['mkm']) || !empty($_GET['mmi'])) {
+        if (gget('mi') || gget('km') || gget('mkm') || gget('mmi')) {
             echo "<h2>Conversions</h2>";
         }
-        if (!empty($_GET['mi']) || !empty($_GET['mmi'])) {
+        if (gget('mi') || gget('mmi')) {
             echo "<h3>Freedom units to metric: 1 Mile = 1.609 Kilometers</h3>";
-            if (!empty($_GET['mi'])) {
+            if (gget('mi')) {
                 $mii = $_GET['mi'];
                 $kmo = $mii * 1.609;
                 echo "<b>$mii Miles = $kmo Kilometers</b>";
             }
-            if (!empty($_GET['mmi'])) {
+            if (gget('mmi')) {
                 $mmi = $_GET['mmi'];
                 $kmo = $mmi / 1.609;
-                $fivek = $kmo * 5;
-                $tenk = $kmo * 10;
-                $hmh = floor(($kmo * 21.0975) / 60);
-                $hmm = floor(($kmo * 21.0975) % 60);
-                $marah = floor(($kmo * 42.195) / 60);
-                $maram = floor(($kmo * 42.195) % 60);
                 echo "<b>$mmi Min/Mile = $kmo Min/KM</b>";
                 echo "<br>";
-                echo "<ul><li>$fivek Minute 5k</li><li>$tenk Minute 10k</li>";
-                echo "<li>$hmh Hour and $hmm Minute Half Marathon</li>";
-                echo "<li>$marah Hour and $maram Minute Marathon</li></ul>";
+                calcpaces($kmo);
             }
         }
-        if (!empty($_GET['km']) || !empty($_GET['mkm'])) {
+        if (gget('km') || gget('mkm')) {
             echo "<h3>Metric to Freedom Units: 1 Kilometer = 0.621 Miles</h3>";
-            if (!empty($_GET['km'])) {
+            if (gget('km')) {
                 $kmi = $_GET['km'];
                 $mio = $kmi * 0.621;
                 echo "<b>$kmi Kilometers = $mio Miles</b>";
             }
-            if (!empty($_GET['mkm'])) {
+            if (gget('mkm')) {
                 $mkm = $_GET['mkm'];
                 $mio = $mkm / 0.621;
-                $fivek = $mkm * 5;
-                $tenk = $mkm * 10;
-                $hmh = floor(($mkm * 21.0975) / 60);
-                $hmm = floor(($mkm * 21.0975) % 60);
-                $marah = floor(($mkm * 42.195) / 60);
-                $maram = floor(($mkm * 42.195) % 60);
                 echo "<b>$mkm Min/KM = $mio Min/Mile</b>";
                 echo "<br>";
-                echo "<ul><li>$fivek Minute 5k</li><li>$tenk Minute 10k</li>";
-                echo "<li>$hmh Hour and $hmm Minute Half Marathon</li>";
-                echo "<li>$marah Hour and $maram Minute Marathon</li></ul>";
+                calcpaces($mkm);
             }
         }
         ?>
